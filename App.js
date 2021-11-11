@@ -2,8 +2,8 @@ import {registerRootComponent} from 'expo';
 import React from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
 import AppRouter from './src/components/AppRouter';
-
 class App extends React.Component {
+
   render() {
     return  <SafeAreaView style={styles.main}>
                 <AppRouter/>

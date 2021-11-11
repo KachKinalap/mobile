@@ -1,23 +1,61 @@
-import React from 'react';
-import {View, ScrollView, StyleSheet, Dimensions} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
 import QuizButton from './UI/quizbutton/QuizButton'
+import {useFetching} from '../hooks/useFetching';
+import PostService from '../API/PostService';
 const Available = () => {
-    const quizzes = [
-        {title:'First', count:30},
-        {title:'Социологическое исследование температуры тела курсантов', count:128},
-        {title:'Third', count:1},
-        {title:'Fourth', count:23436},
-        {title:'Fifth', count:42},
-        {title:'Sixth', count:23}
-        ]
+
+
+
+    const [quizzes, setQuizzes] = []
+    const [json, setJson] = useState({})
+    const [fetchJson, isLoading, error] = useFetching(async () => {
+        const response = await PostService.getAll()
+        setJson(response.data)
+        parseQuizzes(json)
+
+    })
+
+    useEffect(() => {
+        fetchJson()
+    }, [])
+
+    const parseQuizzes = (mass)=>{
+
+        for (let i = 0; i < mass.payload.total; i++) {
+            let quiz = {}
+            quiz.title=mass.payload.surveys[i].title
+            quiz.count = mass.payload.surveys[i].questions.length
+            setQuizzes([...quizzes, quiz])
+        }
+    }
+
+
+
+    // const quizzes = [
+    //     {title:'First', count:30},
+    //     {title:'Социологическое исследование температуры тела курсантов', count:128},
+    //     {title:'Third', count:1},
+    //     {title:'Fourth', count:23436},
+    //     {title:'Fifth', count:42},
+    //     {title:'Sixth', count:23},
+    //     {title:'Seventh', count:23},
+    //     {title:'Eighth', count:23}
+    //     ]
     return (
-       <View>
-        <ScrollView contentContainerStyle={styles.avail}>
-            {quizzes.map((quiz=>
-                <QuizButton quizTitle={quiz.title} quizCount={quiz.count}/>
-            ))}
-        </ScrollView>
-       </View>
+        isLoading
+            ?
+            <SafeAreaView>
+                <Text>Загружается...</Text>
+            </SafeAreaView>
+            :
+            <SafeAreaView>
+                <ScrollView contentContainerStyle={styles.avail}>
+                    {quizzes.map((quiz=>
+                            <QuizButton quizTitle={quiz.title} quizCount={quiz.count} key={quiz.title}/>
+                    ))}
+                </ScrollView>
+            </SafeAreaView>
     );
 };
 
@@ -32,3 +70,5 @@ const styles = StyleSheet.create({
 })
 
 export default Available;
+
+

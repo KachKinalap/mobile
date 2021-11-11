@@ -5,6 +5,7 @@ import {privateRoutes} from '../router/index';
 import Login from './Login';
 import Register from './Register';
 import {usersCreds} from './users/index'
+import PostService from '../API/PostService';
 
 const Drawer = createDrawerNavigator();
 
