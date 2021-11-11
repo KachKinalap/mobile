@@ -7,7 +7,7 @@ const Available = () => {
 
 
 
-    const [quizzes, setQuizzes] = []
+    const [quizzes, setQuizzes] = useState([])
     const [json, setJson] = useState({})
     const [fetchJson, isLoading, error] = useFetching(async () => {
         const response = await PostService.getAll()
@@ -29,6 +29,7 @@ const Available = () => {
             setQuizzes([...quizzes, quiz])
         }
     }
+
 
 
 
