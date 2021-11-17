@@ -1,19 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, Button, View} from 'react-native';
 import QuizButton from './UI/quizbutton/QuizButton'
 import {useFetching} from '../hooks/useFetching';
 import PostService from '../API/PostService';
-const Available = () => {
+import Loader from './UI/loader/Loader';
+import Quiz from './Quiz';
 
-
+const Available = (props) => {
 
     const [quizzes, setQuizzes] = useState([])
     const [json, setJson] = useState({})
+
     const [fetchJson, isLoading, error] = useFetching(async () => {
         const response = await PostService.getAll()
         setJson(response.data)
-        parseQuizzes(json)
-
+        parseQuizzes(response.data)
     })
 
     useEffect(() => {
@@ -21,44 +22,53 @@ const Available = () => {
     }, [])
 
     const parseQuizzes = (mass)=>{
-
+        let quizzes_curr = []
         for (let i = 0; i < mass.payload.total; i++) {
             let quiz = {}
             quiz.title=mass.payload.surveys[i].title
+            quiz.description = mass.payload.surveys[i].description
             quiz.count = mass.payload.surveys[i].questions.length
-            setQuizzes([...quizzes, quiz])
+            quiz.key = i
+            quizzes_curr.push(quiz)
         }
+        setQuizzes(quizzes_curr)
     }
 
 
 
-
-    // const quizzes = [
-    //     {title:'First', count:30},
-    //     {title:'Социологическое исследование температуры тела курсантов', count:128},
-    //     {title:'Third', count:1},
-    //     {title:'Fourth', count:23436},
-    //     {title:'Fifth', count:42},
-    //     {title:'Sixth', count:23},
-    //     {title:'Seventh', count:23},
-    //     {title:'Eighth', count:23}
-    //     ]
     return (
+        <SafeAreaView>
+    {
         isLoading
             ?
-            <SafeAreaView>
-                <Text>Загружается...</Text>
-            </SafeAreaView>
+                <Loader/>
             :
-            <SafeAreaView>
-                <ScrollView contentContainerStyle={styles.avail}>
-                    {quizzes.map((quiz=>
-                            <QuizButton quizTitle={quiz.title} quizCount={quiz.count} key={quiz.title}/>
-                    ))}
-                </ScrollView>
-            </SafeAreaView>
+            <ScrollView contentContainerStyle={styles.avail}>
+
+                {quizzes.map((quiz=>
+                        <QuizButton
+                            quizTitle={quiz.title}
+                            quizDescr={quiz.description}
+                            quizCount={quiz.count}
+                            key={quiz.key}
+
+                            action = {()=>{
+
+                                props.route.params.action(json.payload.surveys[quiz.key].title)
+                                props.navigation.navigate(
+                                    "Анкета",
+                                    {params:
+                                            {currQuiz:json.payload.surveys[quiz.key]}
+                                    })
+                            }}
+                        />))
+                }
+            </ScrollView>
+    }
+        </SafeAreaView>
     );
 };
+
 
 const styles = StyleSheet.create({
     avail: {

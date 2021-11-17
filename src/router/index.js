@@ -1,6 +1,7 @@
+import QuizRouter from '../components/QuizRouter';
 
-import Available from '../components/Available';
 
-export const privateRoutes = [
-    {name:'Доступные анкеты', component:Available},
+
+export let privateRoutes = [
+    {name:'Менеджер анкет', component:QuizRouter},
 ]

@@ -1,22 +1,29 @@
 import React from 'react';
 import MyButton from '../button/MyButton';
-import {View, TouchableOpacity, Text, StyleSheet, Dimensions} from 'react-native'
-const QuizButton = ({quizTitle, quizCount}) => {
+import {View, Text, StyleSheet} from 'react-native'
+const QuizButton = (props) => {
     return (
         <View style={styles.quizMain}>
             <View style={styles.quizItem}>
+                    <Text
+                        style={styles.quizTitle}
+                    >
+                        {props.quizTitle}
+                    </Text>
                 <Text
-                    style={styles.quizTitle}
+                    style = {styles.quizDescr}
                 >
-                    {quizTitle}
+                    {props.quizDescr}
                 </Text>
                 <Text
                     style={styles.quizCount}
                 >
-                    {quizCount} вопр.
+                    {props.quizCount} вопр.
                 </Text>
             </View>
-            <MyButton title="Начать"/>
+            <View style = {styles.quizButton}>
+            <MyButton title="Начать" onPress = {props.action}/>
+            </View>
         </View>
     );
 };
@@ -31,18 +38,27 @@ const styles = StyleSheet.create({
         borderColor:'sandybrown',
         borderRadius:12,
         margin:'2.5%',
+        position:'relative'
     },
     quizItem: {
-        height:'60%',
+        height:'70%',
         display:'flex',
         alignItems:'center',
-        justifyContent:'center',
+        justifyContent:'space-between',
     },
     quizTitle: {
         fontWeight:'700',
         fontSize:18,
         paddingLeft:5,
         paddingRight:5,
+        textAlign:'center',
+        marginTop:10
+    },
+    quizDescr: {
+        marginTop:10,
+        marginBottom:10,
+        paddingLeft:10,
+        paddingRight:10,
         textAlign:'center'
     },
     quizCount: {
@@ -51,7 +67,12 @@ const styles = StyleSheet.create({
         paddingLeft:10,
         paddingRight:10,
         textAlign:'center'
-
+    },
+    quizButton: {
+        position:'absolute',
+        bottom:10,
+        left:'20%',
+        right:'20%'
     }
 })
 

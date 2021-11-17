@@ -5,7 +5,7 @@ import {privateRoutes} from '../router/index';
 import Login from './Login';
 import Register from './Register';
 import {usersCreds} from './users/index'
-import PostService from '../API/PostService';
+import QuizRouter from './QuizRouter';
 
 const Drawer = createDrawerNavigator();
 
@@ -27,31 +27,33 @@ const AppRouter = () => {
     }
 
     return (
-
-                    isAuth
-                    ?
-                        <NavigationContainer>
-                            <Drawer.Navigator initialRouteName="Домашняя страница">
+        isAuth
+            ?
+            <NavigationContainer>
+                <Drawer.Navigator initialRouteName="Домашняя страница">
                     {privateRoutes.map(route=>
-                            <Drawer.Screen name={route.name} component={route.component} key={route.name}/>
-                        )}
-                            </Drawer.Navigator>
-                        </NavigationContainer>
-                    :
-                        <NavigationContainer>
-                            <Drawer.Navigator initialRouteName="Вход">
-                                <Drawer.Screen
-                                    name="Регистрация"
-                                    component={() => <Register action={register}/>}
-                                    key="Регистрация"
-                                />
-                                <Drawer.Screen
-                                    name="Вход"
-                                    component={() => <Login action={login}/>}
-                                    key="Вход"
-                                />
-                            </Drawer.Navigator>
-                        </NavigationContainer>
+                        <Drawer.Screen
+                            name={route.name}
+                            component={route.component}
+                            key={route.name}
+                        />)}
+                </Drawer.Navigator>
+            </NavigationContainer>
+            :
+            <NavigationContainer>
+                <Drawer.Navigator initialRouteName="Вход">
+                    <Drawer.Screen
+                        name="Регистрация"
+                        component={() => <Register action={register}/>}
+                        key="Регистрация"
+                    />
+                    <Drawer.Screen
+                        name="Вход"
+                        component={() => <Login action={login}/>}
+                        key="Вход"
+                    />
+                </Drawer.Navigator>
+            </NavigationContainer>
     );
 };
 
