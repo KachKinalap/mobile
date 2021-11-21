@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Button} from 'react-native'
 
 const MyButton = (props) => {
+
+    const disabledB = props.disabled
+
     return (
         props.onPress
             ?
         <View style={styles.main}>
 
-            <TouchableOpacity style={styles.myBtn} onPress={props.onPress}>
+            <TouchableOpacity style={styles.myBtn} onPress={props.onPress} disabled={disabledB}>
                 <Text style={styles.myBtnText}>{props.title}</Text>
             </TouchableOpacity>
         </View>
             :
         <View style={styles.main}>
-            <TouchableOpacity style={styles.myBtn}>
+            <TouchableOpacity style={styles.myBtn} disabled={disabledB}>
                 <Text style={styles.myBtnText}>{props.title}</Text>
             </TouchableOpacity>
         </View>

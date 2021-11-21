@@ -7,7 +7,11 @@ const MyInput = (props) => {
         <View style={styles.main}>
             <View style={styles.wrapperInput}>
                 <Text style={styles.inputText}>{props.label}</Text>
-                <TextInput style={styles.input} secureTextEntry={props.secure} onChangeText={text=>props.onChange(text)}/>
+                <TextInput
+                    style={styles.input}
+                    secureTextEntry={props.secure}
+                    onChangeText={text=>props.onChange(text)}
+                />
             </View>
         </View>
     );
